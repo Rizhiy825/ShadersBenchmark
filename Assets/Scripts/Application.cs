@@ -24,7 +24,8 @@ public class Application : MonoBehaviour
         
         manager.UpdateModelsCount(1);
         materialsSetter.SetDefaultMaterial(manager.models);
-
+        uiController.SetShaderName(materialsSetter.CurrentMaterialName);
+        
         uiController.changeShader += () =>
         {
             manager.UpdateModelsCount(manager.models.Count);
@@ -32,9 +33,17 @@ public class Application : MonoBehaviour
             uiController.SetShaderName(materialsSetter.CurrentMaterialName);
         };
 
-        uiController.changeModelsCount += (newCount) =>
+        uiController.setModelsCount += (newCount) =>
         {
             manager.UpdateModelsCount(newCount);
+            materialsSetter.SetCurrentMaterial(manager.models);
+        };
+
+        uiController.changeModelsCount += (changeCount) =>
+        {
+            var currentCount = manager.models.Count;
+            currentCount += changeCount;
+            manager.UpdateModelsCount(currentCount);
             materialsSetter.SetCurrentMaterial(manager.models);
         };
     }

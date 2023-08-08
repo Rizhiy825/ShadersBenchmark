@@ -21,27 +21,6 @@ public class ProfilerController : MonoBehaviour
     private static float maxFps;
     private static float averageFps;
     private static int counter;
-    
-    /*void OnGUI()
-    {
-        ++counter;
-        currentFps = 1.0f / Time.deltaTime;
-        
-        averageFps += (currentFps - averageFps) / counter;
-
-        if (currentFps > maxFps)
-        {
-            maxFps = currentFps;
-        }
-
-        AverageFpsLabel.text = "Average FPS: " + (int) averageFps;
-        MaxFpsLabel.text = "Max FPS: " + (int) maxFps;
-
-        if (counter % 100 == 0)
-        {
-            CurrentFpsLabel.text = "Current FPS: " + (int) currentFps;
-        }
-    }*/
 
     static double GetRecorderFrameAverage(ProfilerRecorder recorder)
     {

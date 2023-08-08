@@ -9,8 +9,11 @@ public class UIController : MonoBehaviour
     private UIDocument root;
     private VisualElement rootVisualElement;
     private ProfilerController fpsWindow;
+
+    private TextField enterField;
     
     public event Action changeShader = () => { };
+    public event Action<int> setModelsCount = (x) => { };
     public event Action<int> changeModelsCount = (x) => { };
     
     // Start is called before the first frame update
@@ -21,9 +24,13 @@ public class UIController : MonoBehaviour
         
         InitFPSWindow();
         
+        enterField = rootVisualElement.Q<TextField>("Count");
         var changeShaderButton = rootVisualElement.Q<Button>("ChangeShader");
         var changeCountButton =  rootVisualElement.Q<Button>("Render");
-        var enterField = rootVisualElement.Q<TextField>("Count");
+        var plusTen =  rootVisualElement.Q<Button>("Plus10");
+        var plusHoundred =  rootVisualElement.Q<Button>("Plus100");
+        var minusTen =  rootVisualElement.Q<Button>("Minus10");
+        var minusHoundred =  rootVisualElement.Q<Button>("Minus100");
 
         changeShaderButton.clicked += () =>
         {
@@ -33,7 +40,22 @@ public class UIController : MonoBehaviour
         
         changeCountButton.clicked += () =>
         {
-            changeModelsCount(Convert.ToInt32(enterField.text));
+            setModelsCount(Convert.ToInt32(enterField.text));
+            fpsWindow.ResetFPS();
+        };
+
+        AddChangeCountClickCallback(plusTen, 10);
+        AddChangeCountClickCallback(plusHoundred, 100);
+        AddChangeCountClickCallback(minusTen, -10);
+        AddChangeCountClickCallback(minusHoundred, -100);
+    }
+
+    private void AddChangeCountClickCallback(Button button, int changeCount)
+    {
+        button.clicked += () =>
+        {
+            enterField.value = (Convert.ToInt32(enterField.text) + changeCount).ToString();
+            changeModelsCount(changeCount);
             fpsWindow.ResetFPS();
         };
     }

@@ -53,6 +53,7 @@
      <Folder Include="Assets\Low Poly Guns\Materials" />
      <Folder Include="Assets\Low Poly Guns\Models\Guns\pistol1" />
      <None Include="Assets\Scripts\root.uxml" />
+     <None Include="Assets\Shaders\NewUnlitShader.shader" />
      <Folder Include="Assets\Low Poly Guns\Models\Guns" />
      <Folder Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Flow" />
      <None Include="Assets\Shaders\Simple.shader" />
@@ -70,6 +71,7 @@
      <Folder Include="Assets\Low Poly Guns\Models" />
      <Folder Include="Assets\Low Poly Guns\Models\Guns\assault4" />
      <Folder Include="Assets\UI Toolkit\UnityThemes" />
+     <None Include="Assets\Shaders\LambertianRefl.shader" />
      <Folder Include="Assets\Low Poly Guns\Models\Guns\sniper2" />
      <Folder Include="Assets\Scenes" />
      <Folder Include="Assets\Low Poly Guns" />
