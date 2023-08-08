@@ -9,6 +9,7 @@
         <ui:Button text="+10" display-tooltip-when-elided="true" name="Plus10" style="font-size: 16px; white-space: normal; height: 100%;" />
         <ui:Button text="+100" display-tooltip-when-elided="true" name="Plus100" style="font-size: 16px; white-space: normal; height: 100%;" />
         <ui:Button text="Render models" display-tooltip-when-elided="true" name="Render" style="font-size: 16px; white-space: normal; width: 100px; height: 100%;" />
+        <ui:Button text="CHANGE MODEL" display-tooltip-when-elided="true" name="ChangeModel" style="font-size: 24px; white-space: normal; flex-grow: 0; flex-shrink: 0; height: 100%; background-color: rgba(0, 0, 0, 0.59); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 130px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
     </ui:VisualElement>
     <ui:Label text="Shader name" display-tooltip-when-elided="true" name="ShaderName" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); font-size: 24px; -unity-text-align: middle-left; white-space: normal; flex-shrink: 1; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: bold;" />
     <ui:Label text="Label" display-tooltip-when-elided="true" name="ProfileData" style="font-size: 24px; -unity-font-style: bold;" />

@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     private TextField enterField;
     
     public event Action changeShader = () => { };
+    public event Action changeModel = () => { };
     public event Action<int> setModelsCount = (x) => { };
     public event Action<int> changeModelsCount = (x) => { };
     
@@ -26,6 +27,7 @@ public class UIController : MonoBehaviour
         
         enterField = rootVisualElement.Q<TextField>("Count");
         var changeShaderButton = rootVisualElement.Q<Button>("ChangeShader");
+        var changeModelButton = rootVisualElement.Q<Button>("ChangeModel");
         var changeCountButton =  rootVisualElement.Q<Button>("Render");
         var plusTen =  rootVisualElement.Q<Button>("Plus10");
         var plusHoundred =  rootVisualElement.Q<Button>("Plus100");
@@ -37,7 +39,13 @@ public class UIController : MonoBehaviour
             changeShader();
             fpsWindow.ResetFPS();
         };
-        
+
+        changeModelButton.clicked += () =>
+        {
+            changeModel();
+            fpsWindow.ResetFPS();
+        };
+
         changeCountButton.clicked += () =>
         {
             setModelsCount(Convert.ToInt32(enterField.text));

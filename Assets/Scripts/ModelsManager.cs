@@ -1,21 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 public class ModelsManager : MonoBehaviour
 {
-    public Object modelToUse;
+    public List<Object> modelsToUse;
     public List<GameObject> models { get; set; } = new List<GameObject>();
+    
+    private int templateIndex;
     private GameObject template;
     private GameObject parent;
 
     public void Init()
     {
-        template = (GameObject) modelToUse;
+        template = (GameObject)modelsToUse[0];
         
         parent = new GameObject();
         parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+    }
+
+    public void ChangeModel()
+    {
+        var modelsCount = models.Count;
+
+        templateIndex++;
+
+        if (templateIndex == modelsToUse.Count)
+        {
+            templateIndex = 0;
+        }
+
+        template = (GameObject)modelsToUse[templateIndex];
+        UpdateModelsCount(modelsCount);
     }
     
     public void UpdateModelsCount(int count)

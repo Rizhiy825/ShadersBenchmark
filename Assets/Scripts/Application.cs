@@ -33,6 +33,12 @@ public class Application : MonoBehaviour
             uiController.SetShaderName(materialsSetter.CurrentMaterialName);
         };
 
+        uiController.changeModel += () =>
+        {
+            manager.ChangeModel();
+            materialsSetter.SetCurrentMaterial(manager.models);
+        };
+
         uiController.setModelsCount += (newCount) =>
         {
             manager.UpdateModelsCount(newCount);

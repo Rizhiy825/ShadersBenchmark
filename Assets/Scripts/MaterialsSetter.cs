@@ -47,7 +47,15 @@ public class MaterialsSetter : MonoBehaviour
         foreach (var model in models)
         {
             var mesh = model.GetComponent<MeshRenderer>();
-            mesh.material = material;
+            var materialsCount = mesh.materials.Length;
+            var newMaterials = new List<Material>();
+            
+            for (int i = 0; i < materialsCount; i++)
+            {
+                newMaterials.Add(material);
+            }
+
+            mesh.materials = newMaterials.ToArray();
         }
     }
 }
