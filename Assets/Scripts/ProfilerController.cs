@@ -67,8 +67,13 @@ public class ProfilerController : MonoBehaviour
         sb.AppendLine($"GC Memory: {gcMemoryRecorder.LastValue / (1024 * 1024)} MB");
         sb.AppendLine($"System Memory: {systemMemoryRecorder.LastValue / (1024 * 1024)} MB");
         sb.AppendLine($"Draw Calls: {drawCallsCountRecorder.LastValue}");
-        sb.AppendLine($"Dynamic Batched Draw Calls Count: {dynamicBatchedDrawCallsCountRecorder.LastValue}");
-        sb.AppendLine($"Static Batched Draw Calls Count: {staticBatchedDrawCallsCountRecorder.LastValue}");
+
+        if (UnityEngine.Application.isEditor)
+        {
+            sb.AppendLine($"Dynamic Batched Draw Calls Count: {dynamicBatchedDrawCallsCountRecorder.LastValue}");
+            sb.AppendLine($"Static Batched Draw Calls Count: {staticBatchedDrawCallsCountRecorder.LastValue}");
+        }
+
         statsText = sb.ToString();
     }
     

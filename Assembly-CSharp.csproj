@@ -45,9 +45,11 @@
      <Compile Include="Assets\Scripts\Application.cs" />
      <Compile Include="Assets\Scripts\MaterialsSetter.cs" />
      <Compile Include="Assets\Scripts\ModelViewer.cs" />
+     <Compile Include="Assets\Scripts\ResolutionController.cs" />
      <Compile Include="Assets\Scripts\ProfilerController.cs" />
      <Compile Include="Assets\Scripts\ModelsManager.cs" />
-     <Compile Include="Assets\Scripts\ResolutionController.cs" />
+     <Compile Include="Assets\Pipeline\RenderPipelineAsset.cs" />
+     <Compile Include="Assets\Pipeline\RenderPipelineInstance.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Models\Guns\sniper1" />
      <Folder Include="Assets\Scripts" />
@@ -59,6 +61,7 @@
      <Folder Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Flow" />
      <Folder Include="Assets\Models\Prefabs\Trees\Cypress" />
      <None Include="Assets\Shaders\Simple.shader" />
+     <Folder Include="Assets\Pipeline" />
      <Folder Include="Assets\Models\Environment\Meshes\Source" />
      <Folder Include="Assets\Models\Guns\assault2" />
      <Folder Include="Assets\Models\Guns\pistol4" />
@@ -73,7 +76,9 @@
      <Folder Include="Assets\Models\Guns\shotgun2" />
      <Folder Include="Assets\Models\Environment\Meshes" />
      <Folder Include="Assets\Models\Guns\smg2" />
+     <Folder Include="Assets\Tree_Textures" />
      <Folder Include="Assets\Shaders" />
+     <Folder Include="Assets\Models\SimpleObjects" />
      <Folder Include="Assets\Models\Guns\pistol3" />
      <Folder Include="Assets\Models\Environment\Meshes\Prefabs" />
      <Folder Include="Assets\Models\Guns\assault4" />
