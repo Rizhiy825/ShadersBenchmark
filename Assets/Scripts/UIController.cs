@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     public event Action changeModel = () => { };
     public event Action<int> setModelsCount = (x) => { };
     public event Action<int> changeModelsCount = (x) => { };
+    public event Action<int> changeResolution = (x) => { };
     
     // Start is called before the first frame update
     public void Init()
@@ -34,6 +35,8 @@ public class UIController : MonoBehaviour
         var minusTen =  rootVisualElement.Q<Button>("Minus10");
         var minusHoundred =  rootVisualElement.Q<Button>("Minus100");
 
+        ConfigureDropDownField(); 
+        
         changeShaderButton.clicked += () =>
         {
             changeShader();
@@ -58,6 +61,32 @@ public class UIController : MonoBehaviour
         AddChangeCountClickCallback(minusHoundred, -100);
     }
 
+    private void ConfigureDropDownField()
+    {
+        var dropField = rootVisualElement.Q<DropdownField>("DropdownField");
+        var resolutions = ResolutionController.ResolutionMultiplier;
+        
+        dropField.choices = new List<string>()
+        {
+            $"1x - {resolutions[0].Item1}x{resolutions[0].Item2} (259 200 pixels)",
+            $"2x - {resolutions[1].Item1}x{resolutions[1].Item2} (518 400 pixels)",
+            $"4x - {resolutions[2].Item1}x{resolutions[2].Item2} (1 036 800 pixels)",
+            $"8x - {resolutions[3].Item1}x{resolutions[3].Item2} (2 073 600 pixels)",
+            $"16x - {resolutions[4].Item1}x{resolutions[4].Item2} (4 147 200 pixels)",
+            $"32x - {resolutions[5].Item1}x{resolutions[5].Item2} (8 294 400 pixels)"
+        };
+
+        dropField.index = ResolutionController.DefaultResolutionIndex;
+
+        dropField.RegisterValueChangedCallback(ChangeResolutionEvent);
+    }
+
+    private void ChangeResolutionEvent(ChangeEvent<string> evt)
+    {
+        var dropField = rootVisualElement.Q<DropdownField>("DropdownField");
+        changeResolution(dropField.index);
+    }
+
     private void AddChangeCountClickCallback(Button button, int changeCount)
     {
         button.clicked += () =>
@@ -80,4 +109,3 @@ public class UIController : MonoBehaviour
         fpsWindow.ProfileData =  rootVisualElement.Q<Label>("ProfileData");
     }
 }
-
