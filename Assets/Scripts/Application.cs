@@ -27,7 +27,7 @@ public class Application : MonoBehaviour
         uiController.Init();
         
         manager.UpdateModelsCount(1);
-        materialsSetter.SetDefaultMaterial(manager.models);
+        materialsSetter.SetDefaultMaterial(manager.Models);
         uiController.SetShaderName(materialsSetter.CurrentMaterialName);
 
         RegisterCallBacks();
@@ -37,29 +37,29 @@ public class Application : MonoBehaviour
     {
         uiController.changeShader += () =>
         {
-            manager.UpdateModelsCount(manager.models.Count);
-            materialsSetter.ChangeMaterial(manager.models);
+            manager.UpdateModelsCount(manager.Models.Count);
+            materialsSetter.ChangeMaterial(manager.Models);
             uiController.SetShaderName(materialsSetter.CurrentMaterialName);
         };
 
         uiController.changeModel += () =>
         {
             manager.ChangeModel();
-            materialsSetter.SetCurrentMaterial(manager.models);
+            materialsSetter.SetCurrentMaterial(manager.Models);
         };
 
         uiController.setModelsCount += (newCount) =>
         {
             manager.UpdateModelsCount(newCount);
-            materialsSetter.SetCurrentMaterial(manager.models);
+            materialsSetter.SetCurrentMaterial(manager.Models);
         };
 
         uiController.changeModelsCount += (changeCount) =>
         {
-            var currentCount = manager.models.Count;
+            var currentCount = manager.Models.Count;
             currentCount += changeCount;
             manager.UpdateModelsCount(currentCount);
-            materialsSetter.SetCurrentMaterial(manager.models);
+            materialsSetter.SetCurrentMaterial(manager.Models);
         };
 
         uiController.changeResolution += (newResolutionIndex) =>

@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 public class ModelsManager : MonoBehaviour
 {
     public List<Object> modelsToUse;
-    public List<GameObject> models { get; set; } = new List<GameObject>();
+    public List<GameObject> Models { get; set; } = new List<GameObject>();
     
     private int templateIndex;
     private GameObject template;
@@ -23,7 +23,7 @@ public class ModelsManager : MonoBehaviour
 
     public void ChangeModel()
     {
-        var modelsCount = models.Count;
+        var modelsCount = Models.Count;
 
         templateIndex++;
 
@@ -47,17 +47,17 @@ public class ModelsManager : MonoBehaviour
             var newModel = Instantiate(template, parent.transform);
             newModel.transform.Rotate(new Vector3(0, lastPosition * (float)Math.PI, 0));
             lastPosition++;
-            models.Add(newModel);
+            Models.Add(newModel);
         }
     }
     
     public void RemoveAllObjectsFromDisplay()
     {
-        for (int i = 0; i < models.Count; i++)
+        for (int i = 0; i < Models.Count; i++)
         {
-            Destroy(models[i]);
+            Destroy(Models[i]);
         }
         
-        models.Clear();
+        Models.Clear();
     }
 }

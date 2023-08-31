@@ -1,1 +1,6 @@
 @import url("unity-theme://default");
+
+.unity-label {
+    margin: 0px;
+    padding: 0px;
+}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using Unity.Profiling;
 using UnityEngine;
@@ -15,13 +13,8 @@ public class ProfilerController : MonoBehaviour
     private ProfilerRecorder dynamicBatchedDrawCallsCountRecorder;
     private ProfilerRecorder staticBatchedDrawCallsCountRecorder;
     
-    public static float currentFps;
     public Label ProfileData { get; set; }
-
-    private static float maxFps;
-    private static float averageFps;
-    private static int counter;
-
+    
     static double GetRecorderFrameAverage(ProfilerRecorder recorder)
     {
         var samplesCount = recorder.Capacity;
@@ -63,6 +56,7 @@ public class ProfilerController : MonoBehaviour
     void Update()
     {
         var sb = new StringBuilder(500);
+        sb.AppendLine($"Frame Per Second: {1 / (GetRecorderFrameAverage(mainThreadTimeRecorder) * (1e-9f)):F0}");
         sb.AppendLine($"Frame Time: {GetRecorderFrameAverage(mainThreadTimeRecorder) * (1e-6f):F1} ms");
         sb.AppendLine($"GC Memory: {gcMemoryRecorder.LastValue / (1024 * 1024)} MB");
         sb.AppendLine($"System Memory: {systemMemoryRecorder.LastValue / (1024 * 1024)} MB");
@@ -80,12 +74,5 @@ public class ProfilerController : MonoBehaviour
     void OnGUI()
     {
         ProfileData.text = statsText;
-    }
-    
-    public void ResetFPS()
-    {
-        maxFps = 0;
-        averageFps = 0;
-        counter = 0;
     }
 }
