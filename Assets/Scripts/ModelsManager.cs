@@ -50,8 +50,8 @@ public class ModelsManager : MonoBehaviour
             Models.Add(newModel);
         }
     }
-    
-    public void RemoveAllObjectsFromDisplay()
+
+    private void RemoveAllObjectsFromDisplay()
     {
         for (int i = 0; i < Models.Count; i++)
         {

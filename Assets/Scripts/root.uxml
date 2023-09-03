@@ -1,19 +1,27 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="ChangeContainer" style="height: auto; flex-direction: row; width: auto; justify-content: flex-start; align-items: center; margin-left: 10px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px;">
-        <ui:Button text="CHANGE SHADER" display-tooltip-when-elided="true" name="ChangeShader" style="font-size: 24px; white-space: normal; flex-grow: 0; flex-shrink: 0; height: 100%; background-color: rgba(0, 0, 0, 0.59); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 130px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-        <ui:Button text="-100" display-tooltip-when-elided="true" name="Minus100" style="font-size: 16px; white-space: normal; height: 100%;" />
-        <ui:Button text="-10" display-tooltip-when-elided="true" name="Minus10" style="font-size: 16px; white-space: normal; height: 100%;" />
-        <ui:TextField picking-mode="Ignore" value="1" text="1" name="Count" focusable="true" style="height: 100%; -unity-text-align: middle-center; align-items: stretch; justify-content: flex-end; position: relative; flex-direction: column-reverse; width: auto;">
-            <ui:Label text="Models count" display-tooltip-when-elided="true" />
-        </ui:TextField>
-        <ui:Button text="+10" display-tooltip-when-elided="true" name="Plus10" style="font-size: 16px; white-space: normal; height: 100%;" />
-        <ui:Button text="+100" display-tooltip-when-elided="true" name="Plus100" style="font-size: 16px; white-space: normal; height: 100%;" />
-        <ui:Button text="Render models" display-tooltip-when-elided="true" name="Render" style="font-size: 16px; white-space: normal; width: 100px; height: 100%;" />
-        <ui:Button text="CHANGE MODEL" display-tooltip-when-elided="true" name="ChangeModel" style="font-size: 24px; white-space: normal; flex-grow: 0; flex-shrink: 0; height: 100%; background-color: rgba(0, 0, 0, 0.59); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 130px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+    <ui:VisualElement name="Panel" style="flex-grow: 1;">
+        <ui:VisualElement name="ControlsAndInfo" style="flex-grow: 1;">
+            <ui:VisualElement name="ChangeContainer" style="height: auto; flex-direction: row; width: auto; justify-content: flex-start; align-items: center; margin-left: 10px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px;">
+                <ui:Button text="CHANGE SHADER" display-tooltip-when-elided="true" name="ChangeShader" style="font-size: 24px; white-space: normal; flex-grow: 0; flex-shrink: 0; height: 100%; background-color: rgba(0, 0, 0, 0.59); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 130px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+                <ui:Button text="-100" display-tooltip-when-elided="true" name="Minus100" style="font-size: 16px; white-space: normal; height: 100%;" />
+                <ui:Button text="-10" display-tooltip-when-elided="true" name="Minus10" style="font-size: 16px; white-space: normal; height: 100%;" />
+                <ui:TextField picking-mode="Ignore" value="1" text="1" name="Count" focusable="true" style="height: 100%; -unity-text-align: middle-center; align-items: stretch; justify-content: flex-end; position: relative; flex-direction: column-reverse; width: auto;">
+                    <ui:Label text="Models count" display-tooltip-when-elided="true" />
+                </ui:TextField>
+                <ui:Button text="+10" display-tooltip-when-elided="true" name="Plus10" style="font-size: 16px; white-space: normal; height: 100%;" />
+                <ui:Button text="+100" display-tooltip-when-elided="true" name="Plus100" style="font-size: 16px; white-space: normal; height: 100%;" />
+                <ui:Button text="Render models" display-tooltip-when-elided="true" name="Render" style="font-size: 16px; white-space: normal; width: 100px; height: 100%;" />
+                <ui:Button text="CHANGE MODEL" display-tooltip-when-elided="true" name="ChangeModel" style="font-size: 24px; white-space: normal; flex-grow: 0; flex-shrink: 0; height: 100%; background-color: rgba(0, 0, 0, 0.59); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 130px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="DropDownContainer" style="align-items: center; flex-direction: row; width: 550px;">
+                <ui:DropdownField label="Render resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="DropdownField" style="font-size: 24px; align-items: center; justify-content: flex-start; -unity-font-style: bold;" />
+            </ui:VisualElement>
+            <ui:Label text="Shader name" display-tooltip-when-elided="true" name="ShaderName" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); font-size: 24px; -unity-text-align: middle-left; white-space: normal; flex-shrink: 1; -unity-font-style: bold; margin-left: 3px; margin-right: 3px; margin-top: 1px; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="Label" display-tooltip-when-elided="true" name="ProfileData" style="font-size: 24px; -unity-font-style: bold; margin-left: 3px; margin-right: 3px; margin-top: 1px; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Charts" style="flex-grow: 0; flex-direction: row; justify-content: space-between;">
+            <Chart name="ModelsCountChart" XMaxValue="15000" XDivisionsCount="10" YMaxValue="60" YDivisionsCount="10" XName="count" YName="ms" style="height: 200px; width: 550px; position: relative; left: 0;" />
+            <Chart name="ResolutionChart" XName="Resolition" YName="ms" YMaxValue="60" YDivisionsCount="10" XMaxValue="32" XDivisionsCount="16" style="width: 550px; height: 200px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="DropDownContainer" style="align-items: center; flex-direction: row; width: 550px;">
-        <ui:DropdownField label="Render resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="DropdownField" style="font-size: 24px; align-items: center; justify-content: flex-start; -unity-font-style: bold;" />
-    </ui:VisualElement>
-    <ui:Label text="Shader name" display-tooltip-when-elided="true" name="ShaderName" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); font-size: 24px; -unity-text-align: middle-left; white-space: normal; flex-shrink: 1; -unity-font-style: bold; margin-left: 3px; margin-right: 3px; margin-top: 1px; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
-    <ui:Label text="Label" display-tooltip-when-elided="true" name="ProfileData" style="font-size: 24px; -unity-font-style: bold; margin-left: 3px; margin-right: 3px; margin-top: 1px; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
 </ui:UXML>

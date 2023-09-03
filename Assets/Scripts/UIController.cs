@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,11 +11,14 @@ public class UIController : MonoBehaviour
     private ProfilerController fpsWindow;
 
     private TextField enterField;
+    private Chart modelsCountChart;
+    private Chart resolutionChart;
     
     public event Action changeShader = () => { };
     public event Action changeModel = () => { };
     public event Action<int> setModelsCount = (x) => { };
     public event Action<int> changeModelsCount = (x) => { };
+    
     public event Action<int> changeResolution = (x) => { };
 
     // Start is called before the first frame update
@@ -26,13 +30,15 @@ public class UIController : MonoBehaviour
         InitFPSWindow();
         
         enterField = rootVisualElement.Q<TextField>("Count");
+        modelsCountChart = rootVisualElement.Q<Chart>("ModelsCountChart");
+        resolutionChart = rootVisualElement.Q<Chart>("ResolutionChart");
         var changeShaderButton = rootVisualElement.Q<Button>("ChangeShader");
         var changeModelButton = rootVisualElement.Q<Button>("ChangeModel");
         var changeCountButton =  rootVisualElement.Q<Button>("Render");
         var plusTen =  rootVisualElement.Q<Button>("Plus10");
-        var plusHoundred =  rootVisualElement.Q<Button>("Plus100");
+        var plusHundred =  rootVisualElement.Q<Button>("Plus100");
         var minusTen =  rootVisualElement.Q<Button>("Minus10");
-        var minusHoundred =  rootVisualElement.Q<Button>("Minus100");
+        var minusHundred =  rootVisualElement.Q<Button>("Minus100");
         
         ConfigureDropDownField(); 
         
@@ -48,13 +54,18 @@ public class UIController : MonoBehaviour
 
         changeCountButton.clicked += () =>
         {
-            setModelsCount(Convert.ToInt32(enterField.text));
+            var newCount = Convert.ToInt32(enterField.text);
+            StartCoroutine(DrawNextPoint(
+                newCount, 
+                modelsCountChart, 
+                () => fpsWindow.CurrentFrameTimeInMs));
+            setModelsCount(newCount);
         };
 
         AddChangeCountClickCallback(plusTen, 10);
-        AddChangeCountClickCallback(plusHoundred, 100);
+        AddChangeCountClickCallback(plusHundred, 100);
         AddChangeCountClickCallback(minusTen, -10);
-        AddChangeCountClickCallback(minusHoundred, -100);
+        AddChangeCountClickCallback(minusHundred, -100);
     }
 
     private void ConfigureDropDownField()
@@ -81,14 +92,24 @@ public class UIController : MonoBehaviour
     {
         var dropField = rootVisualElement.Q<DropdownField>("DropdownField");
         changeResolution(dropField.index);
+        
+        StartCoroutine(DrawNextPoint(
+            (float)Math.Pow(2, dropField.index), 
+            resolutionChart, 
+            () => fpsWindow.CurrentFrameTimeInMs));
     }
 
     private void AddChangeCountClickCallback(Button button, int changeCount)
     {
         button.clicked += () =>
         {
-            enterField.value = (Convert.ToInt32(enterField.text) + changeCount).ToString();
+            var newCount = Convert.ToInt32(enterField.text) + changeCount;
+            enterField.value = newCount.ToString();
             changeModelsCount(changeCount);
+            StartCoroutine(DrawNextPoint(
+                newCount, 
+                modelsCountChart, 
+                () => fpsWindow.CurrentFrameTimeInMs));
         };
     }
     
@@ -102,5 +123,12 @@ public class UIController : MonoBehaviour
     {
         fpsWindow = gameObject.AddComponent<ProfilerController>();
         fpsWindow.ProfileData =  rootVisualElement.Q<Label>("ProfileData");
+    }
+
+    IEnumerator DrawNextPoint(float value, Chart chart, Func<float> valueGetter)
+    {
+        yield return new WaitForSeconds(1f);
+        var y = valueGetter();
+        chart.DrawNextPoint(value, y);
     }
 }

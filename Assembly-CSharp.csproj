@@ -87,7 +87,6 @@
      <Folder Include="Assets\Models\Guns\pistol3" />
      <Folder Include="Assets\Models\Environment\Meshes\Prefabs" />
      <Folder Include="Assets\Models\Guns\assault4" />
-     <None Include="Assets\Scripts\NewUSSFile.uss" />
      <Folder Include="Assets\Models\Environment\Materials" />
      <Folder Include="Assets\UI Toolkit\UnityThemes" />
      <None Include="Assets\Shaders\LambertianRefl.shader" />

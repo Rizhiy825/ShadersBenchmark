@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Object = UnityEngine.Object;
 
 public class Application : MonoBehaviour
 {

@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Chart : VisualElement
 {
-    public float XDivisionsCount { get; set; }
-    public float YDivisionsCount { get; set; }
+    public int XDivisionsCount { get; set; }
+    public int YDivisionsCount { get; set; }
     public float XMaxValue { get; set; }
     public float YMaxValue { get; set; }
     public string XName { get; set; }
     public string YName { get; set; }
 
     public List<Label> XLabels { get; set; }
+    public Label XZeroLabel { get; set; }
     public Label XNameLabel { get; set; }
     public List<Label> YLabels { get; set; }
+    public Label YZeroLabel { get; set; }
     public Label YNameLabel { get; set; }
     public VisualElement YCoord { get; set; }
     public VisualElement LeftPanel { get; set; }
@@ -24,67 +25,55 @@ public class Chart : VisualElement
     public VisualElement Graph { get; set; }
     public float PixelsPerXUnit { get; set; }
     public float PixelsPerYUnit { get; set; }
+    private float XLabelsStep { get; set; }
+    private float YLabelsStep { get; set; }
     private Rect GraphRect { get; set; }
-
-    private List<KeyValuePair<float, float>> Points { get; set; } = new List<KeyValuePair<float, float>>()
+    private List<KeyValuePair<float, float>> Points { get; set; } = new ()
     {
-        new KeyValuePair<float, float>(8, 5),
-        new KeyValuePair<float, float>(16, 15),
-        new KeyValuePair<float, float>(24, 20)
+        // For chart calibrating
+        /*new KeyValuePair<float, float>(1500, 6),
+        new KeyValuePair<float, float>(3000, 18),
+        new KeyValuePair<float, float>(12000, 60)*/
     };
+    
     // Factory class, required to expose this custom control to UXML
     public new class UxmlFactory : UxmlFactory<Chart, UxmlTraits> { }
 
     // Traits class
     public new class UxmlTraits : VisualElement.UxmlTraits
     {
-        private UxmlFloatAttributeDescription XDivisionsCount = new UxmlFloatAttributeDescription {name = "XDivisionsCount", defaultValue = 5};
-        private UxmlFloatAttributeDescription YDivisionsCount = new UxmlFloatAttributeDescription {name = "YDivisionsCount", defaultValue = 5};
-        private UxmlFloatAttributeDescription XMaxValue = new UxmlFloatAttributeDescription {name = "XMaxValue", defaultValue = 5};
-        private UxmlFloatAttributeDescription YMaxValue = new UxmlFloatAttributeDescription {name = "YMaxValue", defaultValue = 5};
-        private UxmlStringAttributeDescription XName = new UxmlStringAttributeDescription {name = "XName", defaultValue = "x"};
-        private UxmlStringAttributeDescription YName = new UxmlStringAttributeDescription {name = "YName", defaultValue = "y"};
+        private readonly UxmlIntAttributeDescription _xDivisionsCount = new() {name = "XDivisionsCount", defaultValue = 5};
+        private readonly UxmlIntAttributeDescription _yDivisionsCount = new() {name = "YDivisionsCount", defaultValue = 5};
+        private readonly UxmlFloatAttributeDescription _xMaxValue = new() {name = "XMaxValue", defaultValue = 5};
+        private readonly UxmlFloatAttributeDescription _yMaxValue = new() {name = "YMaxValue", defaultValue = 5};
+        private readonly UxmlStringAttributeDescription _xName = new() {name = "XName", defaultValue = "x"};
+        private readonly UxmlStringAttributeDescription _yName = new() {name = "YName", defaultValue = "y"};
  
         public override void Init(VisualElement vr, IUxmlAttributes bag, CreationContext cc)
         {
             base.Init(vr, bag, cc);
             var chart = (Chart) vr;
-            chart.YDivisionsCount = YDivisionsCount.GetValueFromBag(bag, cc);
-            chart.XDivisionsCount = XDivisionsCount.GetValueFromBag(bag, cc);
+            chart.YDivisionsCount = _yDivisionsCount.GetValueFromBag(bag, cc);
+            chart.XDivisionsCount = _xDivisionsCount.GetValueFromBag(bag, cc);
 
-            chart.YMaxValue = YMaxValue.GetValueFromBag(bag, cc);
-            chart.XMaxValue = XMaxValue.GetValueFromBag(bag, cc);
+            chart.YMaxValue = _yMaxValue.GetValueFromBag(bag, cc);
+            chart.XMaxValue = _xMaxValue.GetValueFromBag(bag, cc);
             
-            var xName = XName.GetValueFromBag(bag, cc);
+            var xName = _xName.GetValueFromBag(bag, cc);
             chart.XName = xName;
 
-            var yName = YName.GetValueFromBag(bag, cc);
+            var yName = _yName.GetValueFromBag(bag, cc);
             chart.YName = yName;
             
-            //chart.ClearChart();
             chart.FillCoordValues(chart.YCoord, chart.YDivisionsCount, chart.YMaxValue, yName, true);
             chart.FillCoordValues(chart.XCoord, chart.XDivisionsCount, chart.XMaxValue, xName);
         }
     }
-
-    private void CalculateScales()
-    {
-        var xUnit = XMaxValue / XDivisionsCount;
-        var xUnitLenght = XLabels[0].contentRect.width;
-        PixelsPerXUnit = xUnitLenght / xUnit;
-        
-        var yUnit = YMaxValue / YDivisionsCount;
-        var yUnitLenght = YLabels[0].contentRect.height;
-        PixelsPerYUnit = yUnitLenght / yUnit;
-    }
-
+    
     public Chart()
     {
         BuildHierarchy();
-       
-        //FillValues(xValues, XDivisionsCount, XMaxValue);
         generateVisualContent += OnGenerateVisualContent;
-        RegisterCallback<CustomStyleResolvedEvent>(OnStylesResolved);
     }
 
     private void BuildHierarchy()
@@ -114,8 +103,6 @@ public class Chart : VisualElement
         BottomPanel.Add(XCoord);
         BottomPanel.Add(XNameLabel);
 
-        //bottomPanel.style.flexGrow = new StyleFloat(1);
-
         style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
 
         LeftPanel.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.ColumnReverse);
@@ -141,7 +128,7 @@ public class Chart : VisualElement
         MarkDirtyRepaint();
     }
     
-    public void FillCoordValues(VisualElement valuesContainer, float divisionsCount, float maxValue, string coordName, bool isYCoordinate = false)
+    private void FillCoordValues(VisualElement valuesContainer, float divisionsCount, float maxValue, string coordName, bool isYCoordinate = false)
     {
         valuesContainer.Clear();
 
@@ -155,38 +142,32 @@ public class Chart : VisualElement
         }
         
         var step = maxValue / divisionsCount;
-        var labelStepInPercent = 100 / (divisionsCount * 2 + 1);
         
         if (isYCoordinate)
         {
-            AddPlug(valuesContainer, labelStepInPercent, true);
+            AddPlug(valuesContainer, true);
         }
         else
         {
-            AddPlug(valuesContainer, labelStepInPercent);
+            AddPlug(valuesContainer);
         }
         
-        for (int i = 0; i < divisionsCount + 0; i++)
+        for (int i = 0; i < divisionsCount; i++)
         {
             var newLabel = new Label((step * (i + 1)).ToString());
-            newLabel.style.flexGrow = new StyleFloat(1);
             newLabel.style.unityTextAlign = new StyleEnum<TextAnchor>(TextAnchor.MiddleCenter);
 
             if (isYCoordinate)
             {
-                newLabel.style.height = new StyleLength(new Length(labelStepInPercent * 2, LengthUnit.Percent));
                 YLabels.Add(newLabel);
             }
             else
             {
-                newLabel.style.width = new StyleLength(new Length(labelStepInPercent * 2, LengthUnit.Percent));
                 XLabels.Add(newLabel);
             }
             
             valuesContainer.Add(newLabel);
         }
-
-        var nameLabel = new Label(coordName);
 
         if (isYCoordinate)
         {
@@ -198,38 +179,64 @@ public class Chart : VisualElement
         }
     }
 
-    private void AddPlug(VisualElement valuesContainer, float stepInPrecent, bool isVertical = false)
+    private void UpdateLabelsSizes()
+    {
+        XLabelsStep = XCoord.localBound.width / (XDivisionsCount * 2 + 1) * 2;
+        YLabelsStep = YCoord.localBound.height / (YDivisionsCount * 2 + 1) * 2;
+        SetNewSizeForLabels(XZeroLabel, XLabels, XLabelsStep, false);
+        SetNewSizeForLabels(YZeroLabel, YLabels, YLabelsStep, true);
+    }
+
+    private void SetNewSizeForLabels(Label zeroLabel, List<Label> labels, float newSize, bool isVertical)
+    {
+        if (isVertical)
+        {
+            zeroLabel.style.height = newSize / 2;
+        }
+        else
+        {
+            zeroLabel.style.width = newSize / 2;
+        }
+ 
+        foreach (var label in labels)
+        {
+            if (isVertical)
+            {
+                label.style.height = newSize;
+            }
+            else
+            {
+                label.style.width = newSize;
+            }
+        }
+    }
+    
+    private void AddPlug(VisualElement valuesContainer, bool isVertical = false)
     {
         var plug = new Label();
-        plug.style.flexGrow = new StyleFloat(1);
 
         if (isVertical)
         {
-            plug.style.height = new StyleLength(new Length(stepInPrecent, LengthUnit.Percent));
+            YZeroLabel = plug;
         }
         else
-        {            
-            plug.style.width = new StyleLength(new Length(stepInPrecent, LengthUnit.Percent));
+        {
+            XZeroLabel = plug;
         }
         
         valuesContainer.Add(plug);
     }
-
-    // When custom styles are known for this control, make a gradient from the colors.
-    void OnStylesResolved(CustomStyleResolvedEvent evt)
-    {
-        var j = 1;
-    }
-
+    
     void OnGenerateVisualContent(MeshGenerationContext mgc)
     {
-        var zeroPoint = new Vector2(RightPanel.contentContainer.localBound.x, Graph.contentContainer.localBound.height);
+        var zeroPoint = new Vector2(RightPanel.localBound.x, Graph.contentRect.height);
         var diagonal = new Vector2(Graph.contentRect.width, Graph.contentContainer.localBound.height);
         GraphRect = new Rect(zeroPoint,diagonal);
         
         FillBackground(0, 0, contentRect.width, contentRect.height, mgc);
         var painter2D = mgc.painter2D;
         
+        UpdateLabelsSizes();
         MakeDirectionLines(GraphRect, painter2D);
         DrawGrid(GraphRect, painter2D);
         CalculateScales();
@@ -239,12 +246,12 @@ public class Chart : VisualElement
     private void DrawPoints(Rect graphRect, Painter2D painter2D)
     {
         painter2D.lineJoin = LineJoin.Round;
-        painter2D.lineWidth = 2f;
+        painter2D.lineWidth = 1f;
         painter2D.fillColor = Color.yellow;
 
         painter2D.BeginPath();
         painter2D.MoveTo(new Vector2(graphRect.x, graphRect.y));
-        
+
         foreach (var point in Points)
         {
             var pointInPixels = ConvertValueToPixelPosition(graphRect.position, point);
@@ -253,37 +260,52 @@ public class Chart : VisualElement
             
         painter2D.Stroke();
     }
-
+    
     private Vector2 ConvertValueToPixelPosition(Vector2 graphOrigin, KeyValuePair<float, float> point)
     {
         var xCord = point.Key * PixelsPerXUnit;
         var yCord = point.Value * PixelsPerYUnit;
 
-        return new Vector2(graphOrigin.x + xCord, graphOrigin.y - yCord);
+        return new Vector2(graphOrigin.x + (float)xCord, graphOrigin.y - (float)yCord);
     }
 
     private void DrawGrid(Rect graphRect, Painter2D painter2D)
     {
-        painter2D.lineWidth = 1.0f;
-
+        painter2D.lineWidth = 1f;
+        var currentPosition = XLabelsStep;
+        
         foreach (var label in XLabels)
         {
-            var currentX = graphRect.x + label.localBound.center.x;
+            var currentX = graphRect.x + currentPosition;
             DrawLine( new Vector2(currentX, graphRect.y), 
                 new Vector2(currentX, graphRect.y - graphRect.height + painter2D.lineWidth), painter2D);
+            currentPosition += XLabelsStep;
         }
+
+        currentPosition = YLabelsStep;
         
         foreach (var label in YLabels)
         {
-            var currentY = graphRect.y - YCoord.localBound.height + label.localBound.center.y;
+            var currentY = graphRect.y - currentPosition;
             DrawLine( new Vector2(graphRect.x, currentY), 
                 new Vector2(graphRect.x + graphRect.width - painter2D.lineWidth, currentY), painter2D);
+            currentPosition += YLabelsStep;
         }
     }
+    
+    private void CalculateScales()
+    {
+        var xUnit = XMaxValue / XDivisionsCount;
+        PixelsPerXUnit = XLabelsStep / xUnit;
+        
+        var yUnit = YMaxValue / YDivisionsCount;
+        PixelsPerYUnit = YLabelsStep / yUnit;
+    }
+
 
     private void MakeDirectionLines(Rect graphRect, Painter2D painter2D)
     {
-        painter2D.lineWidth = 4.0f;
+        painter2D.lineWidth = 3.0f;
         painter2D.strokeColor = Color.black;
         painter2D.lineJoin = LineJoin.Round;
         painter2D.lineCap = LineCap.Round;

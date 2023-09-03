@@ -14,14 +14,15 @@ public class ProfilerController : MonoBehaviour
     private ProfilerRecorder staticBatchedDrawCallsCountRecorder;
     
     public Label ProfileData { get; set; }
+    public float CurrentFrameTimeInMs { get; private set; }
     
-    static double GetRecorderFrameAverage(ProfilerRecorder recorder)
+    static float GetRecorderFrameAverage(ProfilerRecorder recorder)
     {
         var samplesCount = recorder.Capacity;
         if (samplesCount == 0)
             return 0;
 
-        double r = 0;
+        float r = 0;
         unsafe
         {
             var samples = stackalloc ProfilerRecorderSample[samplesCount];
@@ -56,8 +57,9 @@ public class ProfilerController : MonoBehaviour
     void Update()
     {
         var sb = new StringBuilder(500);
+        CurrentFrameTimeInMs = GetRecorderFrameAverage(mainThreadTimeRecorder) * (1e-6f);
         sb.AppendLine($"Frame Per Second: {1 / (GetRecorderFrameAverage(mainThreadTimeRecorder) * (1e-9f)):F0}");
-        sb.AppendLine($"Frame Time: {GetRecorderFrameAverage(mainThreadTimeRecorder) * (1e-6f):F1} ms");
+        sb.AppendLine($"Frame Time: {CurrentFrameTimeInMs:F1} ms");
         sb.AppendLine($"GC Memory: {gcMemoryRecorder.LastValue / (1024 * 1024)} MB");
         sb.AppendLine($"System Memory: {systemMemoryRecorder.LastValue / (1024 * 1024)} MB");
         sb.AppendLine($"Draw Calls: {drawCallsCountRecorder.LastValue}");
