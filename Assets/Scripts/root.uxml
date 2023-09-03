@@ -20,8 +20,14 @@
             <ui:Label text="Label" display-tooltip-when-elided="true" name="ProfileData" style="font-size: 24px; -unity-font-style: bold; margin-left: 3px; margin-right: 3px; margin-top: 1px; margin-bottom: 1px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
         </ui:VisualElement>
         <ui:VisualElement name="Charts" style="flex-grow: 0; flex-direction: row; justify-content: space-between;">
-            <Chart name="ModelsCountChart" XMaxValue="15000" XDivisionsCount="10" YMaxValue="60" YDivisionsCount="10" XName="count" YName="ms" style="height: 200px; width: 550px; position: relative; left: 0;" />
-            <Chart name="ResolutionChart" XName="Resolition" YName="ms" YMaxValue="60" YDivisionsCount="10" XMaxValue="32" XDivisionsCount="16" style="width: 550px; height: 200px;" />
+            <ui:VisualElement name="ModelsCountChartContainer" style="flex-grow: 0;">
+                <ui:Button text="Start the count analysis" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CountAnalyzer" style="margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-grow: 1; height: 40px;" />
+                <Chart name="ModelsCountChart" XMaxValue="15000" XDivisionsCount="10" YMaxValue="60" YDivisionsCount="10" XName="count" YName="ms" style="height: 200px; width: 550px; position: relative; left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ResolutionChartContainer" style="flex-grow: 0;">
+                <ui:Button text="Start the resolution analysis" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ResolutionAnalyzer" style="margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 40px;" />
+                <Chart name="ResolutionChart" XName="Resolition" YName="ms" YMaxValue="60" YDivisionsCount="10" XMaxValue="32" XDivisionsCount="16" style="width: 550px; height: 200px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

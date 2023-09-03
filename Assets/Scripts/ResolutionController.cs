@@ -37,6 +37,12 @@ public class ResolutionController : MonoBehaviour
 		rezWidth = ResolutionMultiplier[index].Item1;
 		rezHeight = ResolutionMultiplier[index].Item2;
 	}
+	
+	public void UpdateResolution(int width, int height)
+	{
+		rezWidth = width;
+		rezHeight = height;
+	}
 
 	void OnPreCull()
 	{

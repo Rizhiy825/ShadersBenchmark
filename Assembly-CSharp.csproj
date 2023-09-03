@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\ResolutionController.cs" />
      <Compile Include="Assets\Scripts\ProfilerController.cs" />
      <Compile Include="Assets\Scripts\ModelsManager.cs" />
+     <Compile Include="Assets\Scripts\Analyzer.cs" />
      <Compile Include="Assets\Scripts\ModelViewer.cs" />
      <Compile Include="Assets\Scripts\MaterialsSetter.cs" />
      <Folder Include="Assets" />

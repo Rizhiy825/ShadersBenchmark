@@ -11,15 +11,16 @@ public class UIController : MonoBehaviour
     private ProfilerController fpsWindow;
 
     private TextField enterField;
-    private Chart modelsCountChart;
-    private Chart resolutionChart;
+    private DropdownField dropField;
     
     public event Action changeShader = () => { };
     public event Action changeModel = () => { };
     public event Action<int> setModelsCount = (x) => { };
     public event Action<int> changeModelsCount = (x) => { };
-    
     public event Action<int> changeResolution = (x) => { };
+    
+    public Chart ModelsCountChart { get; private set; }
+    public Chart ResolutionChart { get; private set; }
 
     // Start is called before the first frame update
     public void Init()
@@ -30,8 +31,8 @@ public class UIController : MonoBehaviour
         InitFPSWindow();
         
         enterField = rootVisualElement.Q<TextField>("Count");
-        modelsCountChart = rootVisualElement.Q<Chart>("ModelsCountChart");
-        resolutionChart = rootVisualElement.Q<Chart>("ResolutionChart");
+        ModelsCountChart = rootVisualElement.Q<Chart>("ModelsCountChart");
+        ResolutionChart = rootVisualElement.Q<Chart>("ResolutionChart");
         var changeShaderButton = rootVisualElement.Q<Button>("ChangeShader");
         var changeModelButton = rootVisualElement.Q<Button>("ChangeModel");
         var changeCountButton =  rootVisualElement.Q<Button>("Render");
@@ -57,7 +58,7 @@ public class UIController : MonoBehaviour
             var newCount = Convert.ToInt32(enterField.text);
             StartCoroutine(DrawNextPoint(
                 newCount, 
-                modelsCountChart, 
+                ModelsCountChart, 
                 () => fpsWindow.CurrentFrameTimeInMs));
             setModelsCount(newCount);
         };
@@ -66,11 +67,48 @@ public class UIController : MonoBehaviour
         AddChangeCountClickCallback(plusHundred, 100);
         AddChangeCountClickCallback(minusTen, -10);
         AddChangeCountClickCallback(minusHundred, -100);
+
+        InitAnalyzers();
+    }
+
+    private void InitAnalyzers()
+    {
+        var countAnalyzer = gameObject.AddComponent<Analyzer>();
+        countAnalyzer.chart = ModelsCountChart;
+        countAnalyzer.valueChanged += newModelsCount =>
+        {
+            enterField.value = newModelsCount.ToString();
+            setModelsCount(newModelsCount);
+        };
+
+        var countAnalysisButton = rootVisualElement.Q<Button>("CountAnalyzer");
+
+        countAnalysisButton.clicked += () =>
+            countAnalyzer.StartAnalyzing(
+                new List<int>() {0, 1500, 3000, 4500, 6000, 7500, 9000, 10500, 12000, 13500},
+                i => i, 
+                () => fpsWindow.CurrentFrameTimeInMs);
+        
+        var resolutionAnalyzer = gameObject.AddComponent<Analyzer>();
+        resolutionAnalyzer.chart = ResolutionChart;
+        resolutionAnalyzer.valueChanged += newMultiplier =>
+        {
+            dropField.index = newMultiplier;
+            changeResolution(newMultiplier);
+        };
+        
+        var resolutionAnalysisButton = rootVisualElement.Q<Button>("ResolutionAnalyzer");
+        
+        resolutionAnalysisButton.clicked += () =>
+            resolutionAnalyzer.StartAnalyzing(
+                new List<int>() {0, 1, 2, 3, 4, 5},
+                i => (int)Math.Pow(2, i), 
+                () => fpsWindow.CurrentFrameTimeInMs);
     }
 
     private void ConfigureDropDownField()
     {
-        var dropField = rootVisualElement.Q<DropdownField>("DropdownField");
+        dropField = rootVisualElement.Q<DropdownField>("DropdownField");
         var resolutions = ResolutionController.ResolutionMultiplier;
         
         dropField.choices = new List<string>()
@@ -90,13 +128,7 @@ public class UIController : MonoBehaviour
 
     private void ChangeResolutionEvent(ChangeEvent<string> evt)
     {
-        var dropField = rootVisualElement.Q<DropdownField>("DropdownField");
         changeResolution(dropField.index);
-        
-        StartCoroutine(DrawNextPoint(
-            (float)Math.Pow(2, dropField.index), 
-            resolutionChart, 
-            () => fpsWindow.CurrentFrameTimeInMs));
     }
 
     private void AddChangeCountClickCallback(Button button, int changeCount)
@@ -108,7 +140,7 @@ public class UIController : MonoBehaviour
             changeModelsCount(changeCount);
             StartCoroutine(DrawNextPoint(
                 newCount, 
-                modelsCountChart, 
+                ModelsCountChart, 
                 () => fpsWindow.CurrentFrameTimeInMs));
         };
     }
