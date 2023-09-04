@@ -96,6 +96,7 @@
      <Folder Include="Assets\Models" />
      <Folder Include="Assets\Unity.VisualScripting.Generated" />
      <Folder Include="Assets\Models\Environment\Textures" />
+     <Folder Include="Assets\HDRPDefaultResources" />
      <Folder Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.8f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

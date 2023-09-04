@@ -76,6 +76,17 @@ public class Chart : VisualElement
         generateVisualContent += OnGenerateVisualContent;
     }
 
+    public void ClearChart()
+    {
+        Points = new List<KeyValuePair<float, float>>();
+    }
+
+    public void DrawNextPoint(float x, float y)
+    {
+        Points.Add(new KeyValuePair<float, float>(x, y));
+        MarkDirtyRepaint();
+    }
+    
     private void BuildHierarchy()
     {
         LeftPanel = new VisualElement();
@@ -121,13 +132,6 @@ public class Chart : VisualElement
         
         Graph.style.flexGrow = new StyleFloat(1);
     }
-
-    public void DrawNextPoint(float x, float y)
-    {
-        Points.Add(new KeyValuePair<float, float>(x, y));
-        MarkDirtyRepaint();
-    }
-    
     private void FillCoordValues(VisualElement valuesContainer, float divisionsCount, float maxValue, string coordName, bool isYCoordinate = false)
     {
         valuesContainer.Clear();

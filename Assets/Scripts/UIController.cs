@@ -85,7 +85,8 @@ public class UIController : MonoBehaviour
 
         countAnalysisButton.clicked += () =>
             countAnalyzer.StartAnalyzing(
-                new List<int>() {0, 1500, 3000, 4500, 6000, 7500, 9000, 10500, 12000, 13500},
+                //new List<int>() {0, 1500, 3000, 4500, 6000, 7500, 9000, 10500, 12000, 13500},
+                new List<int>() {750, 1500, 2250, 3000, 3750, 4500, 5250, 6000, 6750, 7500},
                 i => i, 
                 () => fpsWindow.CurrentFrameTimeInMs);
         
@@ -101,6 +102,7 @@ public class UIController : MonoBehaviour
         
         resolutionAnalysisButton.clicked += () =>
             resolutionAnalyzer.StartAnalyzing(
+                //new List<int>() {0, 1, 2, 3, 4, 5},
                 new List<int>() {0, 1, 2, 3, 4, 5},
                 i => (int)Math.Pow(2, i), 
                 () => fpsWindow.CurrentFrameTimeInMs);
